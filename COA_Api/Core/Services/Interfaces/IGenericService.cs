@@ -1,8 +1,8 @@
 using System.Linq.Expressions;
 
-namespace COA_Api.Repositories.Interfaces;
+namespace COA_Api.Core.Services.Interfaces;
 
-public interface IGenericRepository<TEntity> where TEntity : class
+public interface IGenericService<TEntity> where TEntity : class
 {
     Task<IEnumerable<TEntity>> GetAllAsync();
     IEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> predicate);

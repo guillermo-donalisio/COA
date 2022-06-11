@@ -2,12 +2,8 @@ using System.ComponentModel.DataAnnotations;
 
 namespace COA_Api.Entities;
 
-public class User
+public class User : BaseEntity
 {
-    [Key]
-    [Required]
-    public int UserID {set;get;}
-
     [Required]
     public string UserName {set;get;}
 
@@ -20,7 +16,7 @@ public class User
 
     public User(int id, string username, string name, string email, string phone)
     {
-        this.UserID = id;
+        this.ID = id;
         this.UserName = username;
         this.Name = name;
         this.Email = email;
