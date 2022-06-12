@@ -1,4 +1,9 @@
+using COA_Api.Core.Services;
+using COA_Api.Core.Services.Interfaces;
 using COA_Api.DataAccess;
+using COA_Api.DataAccess.Seeder;
+using COA_Api.Repositories;
+using COA_Api.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,6 +20,15 @@ builder.Services.AddSwaggerGen();
 var CoaConn = configuration["ConnectionStrings:CoaConnection"];
 builder.Services.AddDbContext<CoaDbContext>(c => c.UseSqlServer(CoaConn));
 
+//Automapper configure service
+builder.Services.AddAutoMapper(typeof(Program));
+
+//Repositories Dependency Injection
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+
+//Services Dependency Injection
+builder.Services.AddScoped<IUserService, UserService>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -29,5 +43,8 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+// Migration manager to seed data
+app.MigrateDatabase();
 
 app.Run();
