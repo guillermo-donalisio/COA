@@ -29,6 +29,15 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 //Services Dependency Injection
 builder.Services.AddScoped<IUserService, UserService>();
 
+// Policy CORS 
+builder.Services.AddCors(o => o.AddPolicy("COA", c => { 
+        c.AllowAnyOrigin()
+            .AllowAnyOrigin()
+            .AllowAnyMethod()
+            .AllowAnyHeader();
+}));
+builder.Services.AddRouting(r => r.SuppressCheckForUnhandledSecurityMetadata = true);
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -37,6 +46,14 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+// Policy CORS 
+app.UseCors("COA");
+app.Use((context, next) =>
+{
+    context.Items["__CorsMiddlewareInvoked"] = true;
+    return next();
+});
 
 app.UseHttpsRedirection();
 
