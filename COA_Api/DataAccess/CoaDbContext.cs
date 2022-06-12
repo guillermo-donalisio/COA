@@ -1,3 +1,4 @@
+using COA_Api.DataAccess.Seeder.Users;
 using COA_Api.Entities;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,7 +15,10 @@ public class CoaDbContext : DbContext
     }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {      
-
+        base.OnModelCreating(modelBuilder);
+        
+        // Implement seed data
+        new UserConfiguration(modelBuilder).Seed();
     }
     public DbSet<User> Users { set; get;}
 
