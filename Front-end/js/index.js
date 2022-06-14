@@ -30,7 +30,7 @@ function createButton(type, userId) {
         button.href = `./edit_users.html?id=${userId}`;    
         colorBtn = 'warning'
     } else {
-        button.onclick = deleteUser(userId)
+        button.onclick = () => { deleteUser(userId) }
         colorBtn = 'danger'
     }
     button.type = "button";
@@ -54,7 +54,6 @@ users.then((data) => {
 
 var idUser = new URLSearchParams(window.location.search).get('id');
 function deleteUser(idUser){    
-
     const id = parseInt(idUser);
     let user = {
         "id": id

@@ -55,7 +55,7 @@ public class UserController : ControllerBase
         });                
     }
 
-    [HttpPut]       
+    [HttpPost]       
     [Route("update/user")]
     public async Task<IActionResult> Edit([FromBody] UserUpdateDTO dto)
     {          
