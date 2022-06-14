@@ -1,5 +1,6 @@
 
-$("#idSave").click(function (event) {
+let saveButton = document.getElementById("idSave");
+saveButton.addEventListener("click", function(event) {
     event.preventDefault();
 
     const userName = $('#idUserName').val();
@@ -33,7 +34,6 @@ $("#idSave").click(function (event) {
         }).then((result) => {
             if (result.isConfirmed) {
                 insertUser(userName, name, email, phone);                
-                //window.location.replace("index.html");
             }
         })
         return false;
@@ -96,7 +96,9 @@ function validate(userName, name, email) {
     return true;
 }
 
-$("#idCancel").click(function () {
+let cancelButton = document.getElementById("idCancel");
+cancelButton.addEventListener("click", function(event) {
+    event.preventDefault();
     Swal.fire({
         title: 'Are you sure do you want to cancel the operation?',
         text: "You will be redirected to the main page",
@@ -113,7 +115,8 @@ $("#idCancel").click(function () {
     return false;
 });
 
-$("#idSaveUpdate").click(function (event) {
+let updateButton = document.getElementById("idSave");
+updateButton.addEventListener("click", function(event) {
     event.preventDefault();
 
     var idUser = new URLSearchParams(window.location.search).get('id');
@@ -121,22 +124,38 @@ $("#idSaveUpdate").click(function (event) {
     let userName = $('#idUserName').val();
     let name = $('#IdName').val();
     let email = $('#idEmail').val();
-    let phone = $('#idPhone').val();       
+    let phone = $('#idPhone').val(); 
 
-    Swal.fire({
-        title: 'Are you sure do you want to proceed?',
-        text: "The record will be displayed in the list of users",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#4765e9',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Si'
-    }).then((result) => {
-        if (result.isConfirmed) {
-            updateUser(idUser, userName, name, email, phone);            
-        }
-    })
-    return false;
+    if(!validate(userName, name, email, phone))
+    {
+        Swal.fire({
+            title: 'Wrong data',
+            text: "Please, set a valid information",
+            icon: 'warning',
+            showCancelButton: false,
+            confirmButtonColor: '#4765e9',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Aceptar'
+        })
+        return false;
+    }
+    else {
+
+        Swal.fire({
+            title: 'Are you sure do you want to proceed?',
+            text: "The record will be displayed in the list of users",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#4765e9',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Si'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                updateUser(idUser, userName, name, email, phone);            
+            }
+        })
+        return false;
+    }  
 
 });
 

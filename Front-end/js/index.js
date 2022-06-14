@@ -24,9 +24,16 @@ function loadTable(users) {
 function createButton(type, userId) {
 
     const button = document.createElement('a');
-    button.href = `./${type}_users.html?id=${userId}`;
+
+    let colorBtn = ''
+    if(type === 'edit') {
+        button.href = `./edit_users.html?id=${userId}`;    
+        colorBtn = 'warning'
+    } else {
+        button.onclick = deleteUser(userId)
+        colorBtn = 'danger'
+    }
     button.type = "button";
-    let colorBtn = (type === 'edit') ? 'warning' : 'danger'
     button.classList.add("btn", "btn-sm", `btn-outline-${colorBtn}`);
     button.text = type.replace(/^\w/, (c) => c.toUpperCase());    
     const td = document.createElement("td");
@@ -44,6 +51,35 @@ const users = getUsers()
 users.then((data) => {
     loadTable(data)
 });
+
+var idUser = new URLSearchParams(window.location.search).get('id');
+function deleteUser(idUser){    
+
+    const id = parseInt(idUser);
+    let user = {
+        "id": id
+    };
+
+    const options = {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(user),
+    };
+
+    fetch('https://localhost:5001/delete/user/' + id, options)
+        .then(data => {
+            if (!data.ok) {
+                throw Error(data.status);
+            }
+            return data.json();
+        }).then(update => {
+            console.log(update);
+        }).catch(e => {
+            console.log(e);
+        });
+};
 
 
 

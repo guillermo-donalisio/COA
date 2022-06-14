@@ -1,0 +1,13 @@
+.btn {
+    width: 10rem;
+}
+
+form {
+    max-width: 25rem;
+    margin: 0 auto !important;
+    justify-content: center;
+}
+
+body {
+    background-color: #fff2f2;
+}

@@ -20,33 +20,19 @@ public class UserController : ControllerBase
     [HttpGet]
     [Route("get/users")]
     public async Task<IActionResult> GetAll()
-    {
-        try
-        {
-            var user = _userService.Find(u => u.isActive == true);            
-            return user != null ? Ok(_mapper.Map<IEnumerable<UserGetDTO>>(user))
-                                : NotFound("The list of user has not been found"); 
-        }
-        catch (System.Exception ex)
-        {
-            throw new Exception(ex.Message);
-        }
+    {    
+        var user = _userService.Find(u => u.isActive == true);            
+        return user != null ? Ok(_mapper.Map<IEnumerable<UserGetDTO>>(user))
+                            : NotFound("The list of user has not been found");               
     }
 
     [HttpGet]
     [Route("get/users/{id}")]
     public async Task<IActionResult> GetById(int id)
-    {
-        try
-        {
-            var user = await _userService.GetById(id);
-            return user != null ? Ok(_mapper.Map<UserGetStateDTO>(user)) 
-                                : NotFound("User doesn't exists");  
-        }
-        catch (System.Exception ex)
-        {
-            throw new Exception(ex.Message);
-        }
+    {        
+        var user = await _userService.GetById(id);
+        return user != null ? Ok(_mapper.Map<UserGetStateDTO>(user)) 
+                            : NotFound("User doesn't exists");          
     }
 
     [HttpPost]       
