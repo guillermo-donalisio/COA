@@ -24,7 +24,7 @@ function loadTable(users) {
 function createButton(type, userId) {
 
     const button = document.createElement('a');
-    button.href = `./user.html?id=${userId}`;
+    button.href = `./${type}_users.html?id=${userId}`;
     button.type = "button";
     let colorBtn = (type === 'edit') ? 'warning' : 'danger'
     button.classList.add("btn", "btn-sm", `btn-outline-${colorBtn}`);
@@ -43,4 +43,9 @@ async function getUsers(){
 const users = getUsers()
 users.then((data) => {
     loadTable(data)
-})
+});
+
+
+
+
+

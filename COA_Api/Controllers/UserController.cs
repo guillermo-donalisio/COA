@@ -51,7 +51,7 @@ public class UserController : ControllerBase
 
     [HttpPost]       
     [Route("create/user")]
-    public async Task<IActionResult> Create([FromForm] UserCreateDTO dto)
+    public async Task<IActionResult> Create([FromBody] UserCreateDTO dto)
     {          
         try
         {                                  
@@ -70,45 +70,41 @@ public class UserController : ControllerBase
     }
 
     [HttpPut]       
-    [Route("update/user/{id}")]
-    public async Task<IActionResult> Edit(int id, [FromForm] UserUpdateDTO dto)
+    [Route("update/user")]
+    public async Task<IActionResult> Edit([FromBody] UserUpdateDTO dto)
     {          
-        if (id != dto.Id)
+        var user = await _userService.GetById(dto.Id);
+        if(user == null)
+        {
+            return StatusCode(StatusCodes.Status400BadRequest, new
+            {
+                Status = "Error",
+                Message = "User deoesn't exists."
+            });    
+        }
+
+        var validate = _userService.Find(u => u.ID == dto.Id);
+        if (validate == null)
         {
             return StatusCode(StatusCodes.Status400BadRequest, new
             {
                 Status = "Error",
                 Message = "Id number not found!"
             });
-        }  
-        try
-        {     
-            var user = await _userService.GetById(id);
-            if(user == null)
-            {
-                return StatusCode(StatusCodes.Status400BadRequest, new
-                {
-                    Status = "Error",
-                    Message = "User deoesn't exists."
-                });    
-            }
+        }            
 
-            // Mapping and request
-            _mapper.Map(dto,user);               
-            var updated = await _userService.Update(user);
-            if(updated == null)
-            {
-                return StatusCode(StatusCodes.Status400BadRequest, new
-                {
-                    Status = "Error",
-                    Message = "Error updating data"
-                });    
-            }                             
-        }
-        catch (System.Exception ex)
+        // Mapping and request
+        _mapper.Map(dto,user);               
+        var updated = await _userService.Update(user);
+        if(updated == null)
         {
-            throw new Exception(ex.Message);
-        }                       
+            return StatusCode(StatusCodes.Status400BadRequest, new
+            {
+                Status = "Error",
+                Message = "Error updating data"
+            });    
+        }                             
+                                      
         return Ok(new 
         {
             Status = "Success",
@@ -120,26 +116,20 @@ public class UserController : ControllerBase
     [Route("delete/user/{id}")]
     public async Task<IActionResult> SoftDelete(int? id)
     {
-        try
+        var user = await _userService.GetById(id.Value);
+        if(user == null)
         {
-            var user = await _userService.GetById(id.Value);
-            if(user == null)
+            return StatusCode(StatusCodes.Status400BadRequest, new
             {
-                return StatusCode(StatusCodes.Status400BadRequest, new
-                {
-                    Status = "Error",
-                    Message = "User not found or doesn't exist."
-                });   
-            }
+                Status = "Error",
+                Message = "User not found or doesn't exist."
+            });   
+        }
 
-            // request  
-            await _userService.SoftDelete(user, id);
-            await _userService.Update(user);
-        }
-        catch (Exception ex)
-        {
-            throw new Exception(ex.Message);
-        }
+        // request  
+        await _userService.SoftDelete(user, id);
+        await _userService.Update(user);
+
         return Ok(new 
         {
             Status = "Success",
