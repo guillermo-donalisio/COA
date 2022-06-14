@@ -1,82 +1,4 @@
 
-// let saveButton = document.getElementById("idSave");
-// saveButton.addEventListener("click", function(event) {
-//     event.preventDefault();
-
-//     const userName = $('#idUserName').val();
-//     const name = $('#IdName').val();
-//     const email = $('#idEmail').val();
-//     const phone = $('#idPhone').val();
-
-//     if(!validate(userName, name, email, phone))
-//     {
-//         Swal.fire({
-//             title: 'Wrong data',
-//             text: "Please, set a valid information",
-//             icon: 'warning',
-//             showCancelButton: false,
-//             confirmButtonColor: '#4765e9',
-//             cancelButtonColor: '#d33',
-//             confirmButtonText: 'Aceptar'
-//         })
-//         return false;
-//     }
-//     else 
-//     {
-//         Swal.fire({
-//             title: 'Are you sure do you want to proceed?',
-//             text: "The record will be displayed in the list of users",
-//             icon: 'warning',
-//             showCancelButton: true,
-//             confirmButtonColor: '#4765e9',
-//             cancelButtonColor: '#d33',
-//             confirmButtonText: 'Si'
-//         }).then((result) => {
-//             if (result.isConfirmed) {
-//                 insertUser(userName, name, email, phone);                
-//             }
-//         })
-//         return false;
-//     }
-// });
-
-// function insertUser(userName, name, email, phone){
-    
-//     const user = {
-//         "userName" : userName,
-//         "name" : name,
-//         "email" : email,
-//         "phone" : phone
-//     };
-
-//     const options = {
-//         method: 'POST',
-//         headers: {
-//             'Content-Type': 'application/json',
-//         },
-//         body: JSON.stringify(user),
-//     };
-
-//     fetch('https://localhost:5001/create/user', options)
-//         .then(data => {
-//             if (!data.ok) {
-//                 throw Error(data.status);
-//             }
-//             return data.json();
-//         }).then(update => {
-//             Swal.fire({
-//                 position: 'center',
-//                 icon: 'success',
-//                 title: 'User creation successfully!',
-//                 showConfirmButton: false,
-//                 timer: 1500
-//             })
-//             return false;
-//             //console.log(update);
-//         }).catch(e => {
-//             console.log(e);
-//         });
-// };
 var idUser = new URLSearchParams(window.location.search).get('id');
 
 if(idUser !== null) {
@@ -124,9 +46,9 @@ cancelButton.addEventListener("click", function(event) {
         text: "You will be redirected to the main page",
         icon: 'warning',
         showCancelButton: true,
-        confirmButtonColor: '#4765e9',
+        confirmButtonColor: '#198754',
         cancelButtonColor: '#d33',
-        confirmButtonText: 'Si',
+        confirmButtonText: 'Accept',
     }).then((result) => {
         if (result.isConfirmed) {
             window.location.replace("index.html");
@@ -139,11 +61,10 @@ let saveButton = document.getElementById("idSave");
 saveButton.addEventListener("click", function(event) {
     event.preventDefault();
 
-
-    let userName = $('#idUserName').val();
-    let name = $('#IdName').val();
-    let email = $('#idEmail').val();
-    let phone = $('#idPhone').val(); 
+    let userName = document.getElementById('idUserName').value
+    let name = document.getElementById('idName').value
+    let email = document.getElementById('idEmail').value
+    let phone = document.getElementById('idPhone').value
 
     if(!validate(userName, name, email, phone))
     {
@@ -152,9 +73,9 @@ saveButton.addEventListener("click", function(event) {
             text: "Please, set a valid information",
             icon: 'warning',
             showCancelButton: false,
-            confirmButtonColor: '#4765e9',
+            confirmButtonColor: '#198754',
             cancelButtonColor: '#d33',
-            confirmButtonText: 'Aceptar'
+            confirmButtonText: 'Accept'
         })
         return false;
     }
@@ -165,9 +86,9 @@ saveButton.addEventListener("click", function(event) {
             text: "The record will be displayed in the list of users",
             icon: 'warning',
             showCancelButton: true,
-            confirmButtonColor: '#4765e9',
+            confirmButtonColor: '#198754',
             cancelButtonColor: '#d33',
-            confirmButtonText: 'Si'
+            confirmButtonText: 'Accept'
         }).then((result) => {
             if (result.isConfirmed) {
                 createOrUpdateUser(idUser, userName, name, email, phone);            
@@ -209,7 +130,7 @@ function createOrUpdateUser(id, userName, name, email, phone){
             }
             return data.json();
         }).then(update => {
-            // window.location.replace("./index.html");
+            window.location.replace("./index.html");
         }).catch(e => {
             console.log(e);
         });

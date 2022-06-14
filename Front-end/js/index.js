@@ -27,7 +27,7 @@ function createButton(type, userId) {
 
     let colorBtn = ''
     if(type === 'edit') {
-        button.href = `./edit_users.html?id=${userId}`;    
+        button.href = `./user.html?id=${userId}`;    
         colorBtn = 'warning'
     } else {
         button.onclick = () => { deleteUser(userId) }
@@ -41,46 +41,55 @@ function createButton(type, userId) {
     return td;
 }
 
-async function getUsers(){
-    let response = await fetch("https://localhost:5001/get/users");
-    let data = await response.json();
-    return data;
-}
+fetch("https://localhost:5001/get/users")
+    .then((response) => {
+        return response.json();
+    })
+    .then((user) => {
+        loadTable(user)
+    })
+    .catch((e) => {
+        console.log(e)
+    })
 
-const users = getUsers()
-users.then((data) => {
-    loadTable(data)
-});
-
-var idUser = new URLSearchParams(window.location.search).get('id');
 function deleteUser(idUser){    
-    const id = parseInt(idUser);
-    let user = {
-        "id": id
-    };
 
-    const options = {
-        method: 'DELETE',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(user),
-    };
-
-    fetch('https://localhost:5001/delete/user/' + id, options)
-        .then(data => {
-            if (!data.ok) {
-                throw Error(data.status);
-            }
-            return data.json();
-        }).then(update => {
-            console.log(update);
-        }).catch(e => {
-            console.log(e);
-        });
+    Swal.fire({
+        title: 'Are you sure do you want to delete this user?',
+        text: "The record will be deleted from the list of users",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#198754',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Accept',
+    }).then((result) => {
+        if (result.isConfirmed) {
+            
+            const id = parseInt(idUser);
+            let user = {
+                "id": id
+            };
+        
+            const options = {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(user),
+            };
+        
+            fetch(`https://localhost:5001/delete/user/${id}`, options)
+                .then(data => {
+                    if (!data.ok) {
+                        throw Error(data.status);
+                    }
+                    return data.json();
+                }).then(update => {
+                    window.location.replace("index.html");
+                }).catch(e => {
+                    console.log(e);
+                });
+        }
+    })
+    return false;
 };
-
-
-
-
-
