@@ -1,4 +1,5 @@
 # Exámen COA
+> CODE FIRST APPROACH
 
 ### Project Versions:
 - Visual Studio Code: 1.66.2
@@ -28,6 +29,19 @@
   }
 }
 ````
+
+## Migrations
+- Data seeder include in the project:
+- Exectute following commands to create the snapshot: 
+- Then run the app and the database will be created with the seeder configuration
+````
+CLI
+dotnet ef migrations add NameMigration
+
+Visual Studio
+Add-Migration NameMigration
+````
+
 ## Test your endpoints using Swagger at local host or with live server
 
 ````
